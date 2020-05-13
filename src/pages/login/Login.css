@@ -1,0 +1,9 @@
+.login .bg-teal{
+  background-color: #162c43;
+  padding: 30px;
+}
+
+.login .bg-teal h2{
+  color: white;
+  text-align: center;
+}
