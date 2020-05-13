@@ -11,3 +11,44 @@ h1, h2, h3 {
 *:focus, *:active{
   outline: none;
 }
+
+input {
+  height: 50px;
+  border: solid 1px #222222;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #162d43;
+  border-color: #162d43bd;
+}
+
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+  color: #fff;
+  background-color: #162d43;
+  border-color: #162d43bd;
+}
+
+.btn-primary:hover {
+  color: #fff;
+  background-color: #203e5a;
+  border-color: #162d43bd;
+}
+
+.btn-primary:focus {
+  color: #fff;
+  background-color: #162d43;
+  border-color: #162d43bd;
+  box-shadow: none;
+}
+
+.btn-default {
+  background: #162e4314;
+  border-color: #162d43bd;
+}
+
+.btn-default:focus{
+  box-shadow: none;
+}
