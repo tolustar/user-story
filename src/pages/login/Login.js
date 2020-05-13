@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useHistory } from 'react-router-dom';
 import axios from "axios";
 import allActions from "./../../store/actions";
 import "./Login.css";
 
 export const validateInput = (email, password) => {
-
   var emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; // eslint-disable-line
 
   if (email.length === 0) {
@@ -27,7 +27,7 @@ export const validateInput = (email, password) => {
   return "Input is valid";
 };
 
-export default function Login() {
+export default function Login(props) {
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -37,16 +37,16 @@ export default function Login() {
   const [errorMessage, displayErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const dispatch = useDispatch();
+  const history = useHistory();
 
-  
+  const dispatch = useDispatch();
 
   const loginUser = (event) => {
     event.preventDefault();
     displayErrorMessage(null);
     setLoading(true);
 
-    const getResult = validateInput(user.email, user.password);
+    const getResult = validateInput({user});
 
     if (getResult === "Input is valid") {
       axios
@@ -56,9 +56,12 @@ export default function Login() {
           isAdmin: user.isAdmin,
         })
         .then((response) => {
-          console.log("response", response);
-          dispatch(allActions.userActions.loginUser(user));
+          console.log(response);
+          dispatch(allActions.userActions.loginUser(response.data));
           setLoading(false);
+          history.push(`/create-story`);
+          
+
         })
         .catch((error) => {
           console.log("error", error);
@@ -73,15 +76,12 @@ export default function Login() {
 
   return (
     <div className="login">
-      <div className="bg-teal">
-        <h2>User Story</h2>
-      </div>
-
       <div className="container">
         <div className="row">
           <div className="col-md-3"></div>
           <div className="col-md-6">
             <div className="form-container">
+              <h4 className="text-center">Login</h4>
               {errorMessage !== null && (
                 <div className="bg-danger p-3 text-white text-center errorMessage">
                   {errorMessage}
@@ -90,8 +90,9 @@ export default function Login() {
 
               <form onSubmit={loginUser}>
                 <div className="email-field">
-                  <label htmlFor="email"></label>
+                  <label htmlFor="email">Email</label>
                   <input
+                    id="email"
                     type="email"
                     className="form-control"
                     placeholder="Please enter your email"
@@ -103,8 +104,9 @@ export default function Login() {
                 </div>
 
                 <div className="password-field">
-                  <label htmlFor="password"></label>
+                  <label htmlFor="password">Password</label>
                   <input
+                    id="password"
                     type="password"
                     className="form-control"
                     placeholder="Please enter your password"

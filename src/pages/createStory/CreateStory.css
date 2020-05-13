@@ -1,0 +1,28 @@
+
+.create-story button{
+  margin: 20px 0px 0px;
+}
+
+.create-story .current-user{
+  margin-top: 50px;
+}
+
+.create-story .form-container{
+  margin-top: 80px;
+}
+
+.create-story .errorMessage{
+  border-radius: 20px;
+}
+
+.create-story label {
+  margin: 20px 0px 0px;
+}
+
+.create-story button{
+  margin-bottom: 100px
+}
+
+.create-story select{
+  width: 100%;
+}

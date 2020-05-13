@@ -12,6 +12,16 @@ h1, h2, h3 {
   outline: none;
 }
 
+.bg-teal{
+  background-color: #162c43;
+  padding: 30px;
+}
+
+.bg-teal h2{
+  color: white;
+  text-align: center;
+}
+
 input {
   height: 50px;
   border: solid 1px #222222;
