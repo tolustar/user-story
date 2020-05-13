@@ -4,6 +4,29 @@ import axios from "axios";
 import allActions from "./../../store/actions";
 import "./Login.css";
 
+export const validateInput = (email, password) => {
+
+  var emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; // eslint-disable-line
+
+  if (email.length === 0) {
+    return "Email is empty";
+  }
+
+  if (!emailRegex.test(email)) {
+    return "Email is invalid";
+  }
+
+  if (password.length === 0) {
+    return "Password is empty";
+  }
+
+  if (password.length < 5) {
+    return "Password is less than the required characters of five(5)";
+  }
+
+  return "Input is valid";
+};
+
 export default function Login() {
   const [user, setUser] = useState({
     email: "",
@@ -16,28 +39,7 @@ export default function Login() {
 
   const dispatch = useDispatch();
 
-  const validateInput = (email, password) => {
-
-    var emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; // eslint-disable-line
-
-    if (email.length === 0) {
-      return "Email is empty";
-    }
-
-    if (!emailRegex.test(email)) {
-      return "Email is invalid";
-    }
-
-    if (password.length === 0) {
-      return "password is empty";
-    }
-
-    if (password.length < 5) {
-      return "Password is less than the required characters of five(5)";
-    }
-
-    return "Input is valid";
-  };
+  
 
   const loginUser = (event) => {
     event.preventDefault();
