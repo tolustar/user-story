@@ -63,9 +63,6 @@ export default function ViewStory() {
               <h4 className="mt-2 mb-4">View Story - {story.summary} </h4>
 
               <div className="d-flex flex-column mb-3 mt-4">
-                <div className="mb-3">
-                  <strong>Id</strong> - {story.id}
-                </div>
 
                 <div className="mb-3">
                   <strong>Summary</strong> - {story.summary}
@@ -87,6 +84,9 @@ export default function ViewStory() {
                 </div>
                 <div className="mb-3">
                   <strong>Cost</strong> - {story.cost}
+                </div>
+                <div className="mb-3">
+                  <strong>Status</strong> - {story.status === null ? "Waiting for review" : story.status }
                 </div>
               </div>
 
