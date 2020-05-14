@@ -1,0 +1,15 @@
+.list-stories-table-container {
+  margin: 30px 0px 70px;
+}
+
+.list-stories-disabled-link {
+  pointer-events: none;
+}
+
+.list-stories-table tr {
+  cursor: pointer;
+}
+
+.list-stories select{
+  border: solid 1px;
+}

@@ -5,10 +5,12 @@ An app that allows you to create ticket which can either be approved or rejected
 ### `npm start`
 
 Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Open [http://localhost:4000](http://localhost:4000) to view it in the browser.
+Ensure the swaggaer api server has been started and it is running on port 3000
+
 
 ### `npm test`
-Launches the test runner in the interactive watch mode.<br />
+Launches the test runner. Currently there are 20 tests in this project <br />
 
 ### `npm run build`
 

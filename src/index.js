@@ -5,19 +5,29 @@ import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 import rootReducer from "./store/reducers";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import { PersistGate } from "redux-persist/integration/react";
+import hardSet from 'redux-persist/lib/stateReconciler/hardSet'
 
-const store = createStore(
-  rootReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ &&
-    window.__REDUX_DEVTOOLS_EXTENSION__()
-);
+
+const persistConfig = {
+  key: "root",
+  storage,
+  stateReconciler: hardSet,
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+let store = createStore(persistedReducer);
+let persistor = persistStore(store);
 
 ReactDOM.render(
-  <React.StrictMode>
+ 
     <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>,
+      <PersistGate loading={null} persistor={persistor}>
+        <App />
+      </PersistGate>
+    </Provider>,
   document.getElementById("root")
 );
 

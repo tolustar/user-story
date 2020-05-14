@@ -5,10 +5,7 @@ const stories = (state = [], action) => {
             ...state,
           ]
       case "CREATE":
-          return [
-            ...state,
-            action.payload
-          ]
+          return action.payload
       case "ACCEPT":
           return action.payload
           

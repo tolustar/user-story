@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import allActions from "./../../store/actions";
 import "./Login.css";
@@ -40,13 +40,15 @@ export default function Login(props) {
   const history = useHistory();
 
   const dispatch = useDispatch();
+  const getUser = useSelector((state) => state.currentUser);
 
   const loginUser = (event) => {
     event.preventDefault();
     displayErrorMessage(null);
     setLoading(true);
 
-    const getResult = validateInput({user});
+    const { email, password } = user;
+    const getResult = validateInput(email, password);
 
     if (getResult === "Input is valid") {
       axios
@@ -56,12 +58,14 @@ export default function Login(props) {
           isAdmin: user.isAdmin,
         })
         .then((response) => {
-          console.log(response);
           dispatch(allActions.userActions.loginUser(response.data));
           setLoading(false);
-          history.push(`/create-story`);
-          
 
+          if (response.data.role === "user") {
+            history.push(`/create-story`);
+          } else {
+            history.push(`/stories`);
+          }
         })
         .catch((error) => {
           console.log("error", error);
@@ -74,22 +78,36 @@ export default function Login(props) {
     }
   };
 
+  const checkLoginState = () => {
+    if (!!getUser.details.token) {
+      if (getUser.details.role === "user") {
+        history.push(`/create-story`);
+      } else {
+        history.push(`/stories`);
+      }
+    }
+  };
+
+  useEffect(() => {
+    checkLoginState();
+  }, []);// eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <div className="login">
       <div className="container">
         <div className="row">
           <div className="col-md-3"></div>
           <div className="col-md-6">
-            <div className="form-container">
+            <div className="login-form-container">
               <h4 className="text-center">Login</h4>
               {errorMessage !== null && (
-                <div className="bg-danger p-3 text-white text-center errorMessage">
+                <div className="bg-danger p-3 text-white text-center login-error-message">
                   {errorMessage}
                 </div>
               )}
 
               <form onSubmit={loginUser}>
-                <div className="email-field">
+                <div className="login-email-field">
                   <label htmlFor="email">Email</label>
                   <input
                     id="email"
@@ -103,7 +121,7 @@ export default function Login(props) {
                   />
                 </div>
 
-                <div className="password-field">
+                <div className="login-password-field">
                   <label htmlFor="password">Password</label>
                   <input
                     id="password"
@@ -134,7 +152,7 @@ export default function Login(props) {
                     <button
                       type="button"
                       className={
-                        user.isAdmin === "admin"
+                        user.isAdmin === true
                           ? "btn btn-primary"
                           : "btn btn-default"
                       }

@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import allActions from "./../../store/actions";
 import "./CreateStory.css";
+import LogoutButton from "./../../components/LogoutButton";
 
 export const validateStoryInput = (
   summary,
@@ -10,7 +12,7 @@ export const validateStoryInput = (
   type,
   complexity,
   estimatedHrs,
-  cost,
+  cost
 ) => {
   if (summary.length === 0) return "Summary field is empty";
   if (description.length === 0) return "Description field is empty";
@@ -19,12 +21,16 @@ export const validateStoryInput = (
   if (estimatedHrs.length === 0) return "Estimated Hours field is empty";
   if (cost.length === 0) return "Cost field is empty";
 
-  let typeValue = {enhancement: true, bugfix: true, development: true,  qa: true};
-  if(typeValue[type] !== true) return "Invalid type";
+  let typeValue = {
+    enhancement: true,
+    bugfix: true,
+    development: true,
+    qa: true,
+  };
+  if (typeValue[type] !== true) return "Invalid type";
 
-  let complexityValue = {low: true, mid: true, high: true}
-  if(complexityValue[complexity] !== true) return "Invalid complexity";
- 
+  let complexityValue = { low: true, mid: true, high: true };
+  if (complexityValue[complexity] !== true) return "Invalid complexity";
 
   return "Story is valid";
 };
@@ -41,6 +47,7 @@ export default function CreateStory() {
 
   const [errorMessage, displayErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const history = useHistory();
 
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.currentUser);
@@ -50,19 +57,35 @@ export default function CreateStory() {
     displayErrorMessage(null);
     setLoading(true);
 
-    const getResult = validateStoryInput({story});
+    const {
+      summary,
+      description,
+      type,
+      complexity,
+      estimatedHrs,
+      cost,
+    } = story;
+    const getResult = validateStoryInput(
+      summary,
+      description,
+      type,
+      complexity,
+      estimatedHrs,
+      cost
+    );
 
     if (getResult === "Story is valid") {
-      
       axios
         .post("http://localhost:3000/api/v1/stories", story, {
           headers: {
-            Authorization: `${currentUser.details.token}`
-          }
+            Authorization: `${currentUser.details.token}`,
+          },
         })
         .then((response) => {
           dispatch(allActions.storyActions.createStory(response.data));
           setLoading(false);
+
+          history.push(`/stories`);
         })
         .catch((error) => {
           displayErrorMessage("An error occured, please try again");
@@ -74,26 +97,35 @@ export default function CreateStory() {
     }
   };
 
+  useEffect(() => {
+    if (!!currentUser.details.token === false) {
+      history.push("/");
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <div className="create-story">
+      <LogoutButton />
+
       <div className="container">
         <div className="row">
           <div className="col-md-3"></div>
           <div className="col-md-6">
-            <div className="current-user text-center">
-              Current User - {currentUser.details.firstName} {currentUser.details.lastName}
+            <div className="create-story-current-user text-center">
+              Current User - {currentUser.details.firstName}{" "}
+              {currentUser.details.lastName}
             </div>
 
-            <div className="form-container">
+            <div className="create-story-form-container">
               <h4 className="text-center">Create Story</h4>
               {errorMessage !== null && (
-                <div className="bg-danger p-3 text-white text-center errorMessage">
+                <div className="bg-danger p-3 text-white text-center create-story-error-message">
                   {errorMessage}
                 </div>
               )}
 
               <form onSubmit={createStory}>
-                <div className="summary-field">
+                <div className="create-story-summary-field">
                   <label htmlFor="summary">Summary</label>
                   <input
                     id="summary"
@@ -107,7 +139,7 @@ export default function CreateStory() {
                   />
                 </div>
 
-                <div className="description-field">
+                <div className="create-story-description-field">
                   <label htmlFor="description">Description</label>
                   <textarea
                     id="description"
@@ -121,7 +153,7 @@ export default function CreateStory() {
                   />
                 </div>
 
-                <div className="type-field">
+                <div className="create-story-type-field">
                   <label htmlFor="type">Type</label>
                   <div>
                     <select
@@ -137,7 +169,7 @@ export default function CreateStory() {
                   </div>
                 </div>
 
-                <div className="complexity-field">
+                <div className="create-story-complexity-field">
                   <label htmlFor="complexity">Complexity</label>
                   <div>
                     <select
@@ -152,7 +184,7 @@ export default function CreateStory() {
                   </div>
                 </div>
 
-                <div className="hrs-field">
+                <div className="create-story-hrs-field">
                   <label htmlFor="hrs">Estimated Hours</label>
                   <input
                     id="hrs"
@@ -166,7 +198,7 @@ export default function CreateStory() {
                   />
                 </div>
 
-                <div className="cost-field">
+                <div className="create-story-cost-field">
                   <label htmlFor="cost">Cost</label>
 
                   <div className="input-group mb-3">

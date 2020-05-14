@@ -1,14 +1,13 @@
-
-.login button{
-  margin: 20px 0px 0px;
-}
-
-.login .form-container{
+.login-form-container {
   margin-top: 100px;
 }
 
-.login .errorMessage{
+.login-error-message {
   border-radius: 20px;
+}
+
+.login button {
+  margin: 20px 0px 0px;
 }
 
 .login label {
