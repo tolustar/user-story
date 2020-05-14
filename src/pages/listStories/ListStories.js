@@ -97,7 +97,6 @@ export default function ListStories() {
       setStories(allStories.sort((a, b) => a.id - b.id));
     }
 
-    console.log(allStories);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
