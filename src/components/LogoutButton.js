@@ -19,7 +19,7 @@ export default function LogoutButton() {
   return (
     <div className="d-flex justify-content-center">
       {!!currentUser.details.token && (
-        <button className="btn btn-primary my-4" onClick={logoutUser}>
+        <button className="btn btn-primary mt-4 mb-2" onClick={logoutUser}>
           Logout
         </button>
       )}

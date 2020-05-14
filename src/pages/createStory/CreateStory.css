@@ -1,9 +1,9 @@
 .create-story-current-user {
-  margin-top: 50px;
+  margin-top: 0px;
 }
 
 .create-story-form-container {
-  margin-top: 80px;
+  margin-top: 30px;
 }
 
 .create-story-error-message {
@@ -28,9 +28,6 @@
 
 
 @media(max-width: 600px){
-  .create-story-current-user {
-    margin-top: 10px;
-  }
   
   .create-story-form-container {
     margin-top: 20px;
